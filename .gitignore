@@ -4,6 +4,7 @@
 **/*.mat
 **/*.jpg
 **/train_games/
+**/train_games.zip
 
 Lab?/*yass.ipynb
 
