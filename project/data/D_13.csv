@@ -1,0 +1,92 @@
+,index,label,area,perimeter,centroid-0,centroid-1,slice,image,filled_image,filled_area,major_axis_length,minor_axis_length,euler_number,inertia_tensor_eigvals-0,inertia_tensor_eigvals-1,solidity,eccentricity,extent
+0,4,3018,44675,2139.621499812309,3746.8070285394515,859.596440962507,"(slice(3587, 3891, None), slice(728, 999, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",64150,351.0195774467366,310.4414854734059,-36,7700.921484430346,6023.369743933431,0.6828638246488238,0.46673096429748906,0.5422776267236357
+1,1,2235,43267,2925.31197539543,1718.3917535304042,779.4418610026117,"(slice(1565, 1860, None), slice(605, 924, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",63937,353.85325892822163,312.43323183762584,-66,7825.758053382691,6100.907772281479,0.6545292266731212,0.4694750247324255,0.4597736570851708
+2,4,9400,46323,2169.0479066835014,1790.5007447704165,2685.5243183731623,"(slice(1651, 1927, None), slice(2539, 2852, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",66674,363.95485657176994,311.739724850655,-39,8278.946101386102,6073.853503122631,0.6806000411389616,0.5160905277151322,0.5362203083761633
+3,2,1330,45119,2486.4570696119918,635.8763492098673,1203.744098938363,"(slice(468, 782, None), slice(1064, 1344, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",65721,359.1503908228692,313.3660021175315,-50,8061.812701763731,6137.390705195296,0.668816056684603,0.4885778838385677,0.5131824385805277
+4,1,2163,43845,2306.0956338982546,1727.5470179039798,530.3950279393317,"(slice(1608, 1868, None), slice(387, 685, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",64385,356.24788947133845,310.2539346177408,-45,7932.034922048936,6016.093996611836,0.6654272271968432,0.4914719637476503,0.5658879710893133
+5,1,965,45896,2553.2276682542183,656.7973025971762,2306.8665243158443,"(slice(509, 836, None), slice(2144, 2451, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",66206,359.20940459665576,313.5178322392199,-57,8064.462271917747,6143.3394457487275,0.6764034014708267,0.48807870405379206,0.4571815637171403
+6,1,196,46302,1800.6864709697645,996.7111787827739,1088.1654788130102,"(slice(849, 1168, None), slice(938, 1232, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",66207,359.5486048673661,312.4066949433995,-2,8079.699953879336,6099.871440341142,0.6884748635748591,0.4950125055993173,0.4936984198067942

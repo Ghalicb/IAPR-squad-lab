@@ -1,0 +1,365 @@
+,index,label,area,perimeter,centroid-0,centroid-1,slice,image,filled_image,filled_area,major_axis_length,minor_axis_length,euler_number,inertia_tensor_eigvals-0,inertia_tensor_eigvals-1,solidity,eccentricity,extent
+0,0,1070,277869,5784.831924123824,842.7341193152168,1768.5665079587864,"(slice(464, 1205, None), slice(1517, 2014, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",339862,875.3888267496051,564.7280924322502,-92,47894.09987487813,19932.3636488855,0.8030895953757226,0.7640839188959729,0.7545108708933764
+1,1,2719,285228,5339.334449440767,2285.7985927047835,611.381435202715,"(slice(2021, 2547, None), slice(234, 980, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",328780,841.2479868714568,550.5358035101387,-41,44231.135963454915,18943.10443415963,0.8540604311204401,0.7561247702068863,0.7268881436100266
+2,2,2726,310721,4777.570993473476,2339.9265192890084,2861.865686580566,"(slice(2089, 2593, None), slice(2490, 3235, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",339121,841.8610291029476,544.421647966687,-24,44295.62452014212,18524.683173422705,0.9038551602365514,0.7627544089648077,0.827530094811974
+3,3,2957,242172,4552.15764646288,3582.608191698462,1776.931697306047,"(slice(3213, 3943, None), slice(1482, 1976, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",260713,837.6340193860368,433.66528477099126,-42,43851.92190205047,11754.09870096906,0.821361949790057,0.8555462150241979,0.6715434529421552
+4,0,1043,290856,7228.824960917638,796.5224716010672,1775.1992016668041,"(slice(425, 1164, None), slice(1523, 2027, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",335427,861.4151829486017,556.7280512659911,-224,46377.2573383983,19371.63269165175,0.8584913178610326,0.7630879272537294,0.7809137186674399
+5,2,2533,305346,4496.825648000666,2283.6452876409057,2852.9080125496976,"(slice(2042, 2526, None), slice(2490, 3216, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",332294,830.1473556252354,541.3195444332001,-25,43071.53950322318,18314.178074085456,0.913015007310794,0.7581532149805263,0.8689809439245954
+6,3,2681,293840,4594.006455591909,2476.658293629186,729.7956745167438,"(slice(2232, 2717, None), slice(368, 1084, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",321386,816.7879191429953,534.417789370013,-36,41696.40655362151,17850.148349695723,0.905446421693244,0.7562420232147747,0.8461671370154927
+7,4,2766,277051,7606.240220500536,3670.384023158191,1691.4329672154224,"(slice(3315, 4038, None), slice(1448, 1936, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",321585,824.7503456273968,540.5424171972586,-204,42513.3207882819,18261.63154934095,0.8496620378321352,0.7552808656560008,0.785238532526132
+8,1,2146,291108,5393.097905408056,796.15469172953,1713.5262308146805,"(slice(429, 1163, None), slice(1466, 1961, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",335073,857.38634660004,562.1167106694492,-141,45944.45920851025,19748.44977586508,0.8611439795531995,0.7550939612279293,0.8012220295599042
+9,5,14517,286046,4204.804399444605,2556.554515707264,2897.6934583948037,"(slice(2300, 2813, None), slice(2528, 3267, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",330647,849.2752781077909,556.2902138626401,-15,45079.2811253166,19341.17512745887,0.8587391173821676,0.7556136620184525,0.7545257671317068
+10,6,15573,290214,6123.11219075793,2661.348139648673,603.3926654124198,"(slice(2412, 2916, None), slice(231, 964, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",316626,819.9244379274215,537.6057359970902,-118,42017.25524441239,18063.74546106081,0.8842569035438649,0.7550413546717726,0.7855681153771195
+11,7,22964,283741,5425.144586602282,3620.0392682058637,1600.448909392721,"(slice(3258, 3980, None), slice(1352, 1848, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",322073,829.8479481968226,546.3496099448392,-97,43040.47607040477,18656.118517929877,0.8723835350255805,0.7526916976810971,0.7923247475650076
+12,1,846,294559,5076.295777473254,620.3452822694265,1916.35535155945,"(slice(260, 980, None), slice(1679, 2157, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",337162,854.5461389411413,559.2206727318256,-30,45640.56897370077,19545.485050664724,0.8687262217241277,0.7561428049815534,0.855878079962808
+13,3,4602,284043,5713.09685938753,2309.747629760283,442.6362557781744,"(slice(2064, 2556, None), slice(76, 798, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",325384,845.0943143731746,549.1336684732552,-112,44636.52501161663,18846.736615680933,0.8658422089046316,0.7601139462415503,0.7996165799608135
+14,4,4631,302498,5208.576044107358,2361.731416406059,2839.9098506436408,"(slice(2120, 2607, None), slice(2472, 3205, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",333784,840.0323525995824,547.5435335222587,-89,44103.39708837432,18737.745068877557,0.900532880831175,0.7583802140883685,0.8474021699241675
+15,5,5132,281128,5314.392277923285,3738.4081272587578,1672.1157693292735,"(slice(3384, 4104, None), slice(1421, 1925, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",322035,833.0121132674146,546.645182065516,-50,43369.32380314025,18676.30969221507,0.8637786783751148,0.7545633841653492,0.7747134038800706
+16,0,664,274406,5855.147724663862,632.3239797963602,1862.6627697645094,"(slice(257, 996, None), slice(1605, 2111, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",333000,860.9952166018152,562.8658090231362,-173,46332.047688200415,19801.119935454353,0.8122485828880963,0.7567204507406666,0.7338353827145967
+17,2,2328,304224,5082.901945915163,2329.9983959187966,2792.987029294204,"(slice(2068, 2596, None), slice(2417, 3177, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",333742,837.4810494131635,545.5156921539724,-42,43835.90675788586,18599.210649139222,0.9024901066171453,0.7587544511328769,0.758133971291866
+18,3,2750,297290,4792.45724908074,2575.702186417303,662.9955699821722,"(slice(2290, 2861, None), slice(282, 1044, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",320388,809.2536107821757,531.2346868114626,-56,40930.71291024931,17638.143279479544,0.9176665236462188,0.7543693708222434,0.6832650734770238
+19,4,2882,298382,5995.064463543176,3676.712861365632,1809.6094201392846,"(slice(3317, 4038, None), slice(1558, 2061, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",322012,812.3266123466112,535.1249835062191,-162,41242.1578204076,17897.421748283206,0.9193657718947965,0.7523567023809904,0.8227528035669478
+20,0,914,271492,5549.630913997048,812.8815839877418,1591.4001296539125,"(slice(452, 1172, None), slice(1352, 1826, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",329591,861.3646033913886,557.6326187582297,-155,46371.811248475264,19434.633593947572,0.8173087922740218,0.7621650249814718,0.7955110173464603
+21,2,2609,279957,4543.602343297302,2174.7004254224757,670.1609568612323,"(slice(1937, 2416, None), slice(308, 1028, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",324131,842.0524716436408,550.5636325468269,-21,44315.77281257278,18945.01959269734,0.8529917186157474,0.7566368991530581,0.8117519137091163
+22,3,2611,302755,4309.853172679884,2210.48012749583,2768.4215553830654,"(slice(1940, 2480, None), slice(2388, 3149, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",331158,831.7830256588832,540.9941525626526,-21,43241.43761089039,18292.167069186416,0.9036464629279751,0.7595893450094211,0.7367377232686037
+23,4,3664,280193,5886.367891305646,3321.204926604162,1812.2427255498887,"(slice(2968, 3684, None), slice(1566, 2060, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",322766,836.3661834076707,543.8240657768459,-38,43719.27454674459,18484.038407378703,0.8608317895118451,0.7597438846936048,0.792168027503223
+24,0,167,281311,7101.22106398553,651.9022540888909,1719.4158493624493,"(slice(287, 1019, None), slice(1469, 1973, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",328444,838.3311007365327,548.4422755965752,-279,43924.9396538829,18799.308103846863,0.8478713624787136,0.7563153358002174,0.7625092158903635
+25,2,209,306035,4603.863273947651,2311.063084287745,2940.7157874099366,"(slice(2070, 2554, None), slice(2577, 3302, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",331168,829.5184173047027,538.0860327209757,-37,43006.30029048118,18096.036163087432,0.9184282867569384,0.7610674090862918,0.8721430607010544
+26,3,235,285557,8051.322435600696,2644.419863634931,410.46691903893094,"(slice(2410, 2877, None), slice(53, 763, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",324658,823.2143165724569,537.8990623311278,-253,42355.11318811608,18083.462578544157,0.8741986836063065,0.7570014869580952,0.8612268902494195
+27,4,474,277876,9938.157318317351,3547.0540708805365,1852.4352121089983,"(slice(3165, 3927, None), slice(1566, 2141, None))","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]","[[False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]
+ ...
+ [False False False ... False False False]
+ [False False False ... False False False]
+ [False False False ... False False False]]",321200,827.6859867345004,531.7339765067661,-373,42816.50578979147,17671.313860731134,0.851876036579571,0.7663406559600421,0.6342028985507246
