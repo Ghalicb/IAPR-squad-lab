@@ -1,12 +1,93 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
+import cv2
+from skimage.color import rgb2hsv
+from skimage.exposure import histogram
+from skimage.util import img_as_ubyte
+
+
+def rgb_to_hsv(rgb_img):
+    """
+    Convert an RGB image into HSV.
+    Parameters
+    ----------
+    rgb_img: 3darray [HxWx3]
+        Image with RGB channels.
+        
+    Returns
+    -------
+    hsv_img: 3darray [HxWx3]
+        Image with HSV channels with values between [0-255].
+    """
+    # Convert from rgb to hsv
+    hsv_img = rgb2hsv(rgb_img)
+    
+    # Convert from range 0-1 to 0-255
+    hsv_img = img_as_ubyte(hsv_img)
+    
+    return hsv_img
+    
+    
+def split_img(img):
+    """
+    Split the three channels of an image of dimensions [HxWxC].
+    Parameters
+    ----------
+    img: 3darray [HxWx3]
+        Image to split.
+       
+    Returns
+    -------
+    tuple of 3 [HxW] array
+        A tuple containing each channel of the image
+    """
+    return (img[:,:,0], img[:,:,1], img[:,:,2])
+    
+    
+def plot_histogram(img, img_type):
+    """
+    Plot the histogram of each channel of an RGB or HSV image.
+    Parameters
+    ----------
+    img: 3darray [HxWx3]
+        Image to plot the histograms.
+    img_type: enum ['RGB', 'HSV']
+        The type of the image.
+    """
+    # Split each channel of the hsv image
+    channel1, channel2, channel3 = split_img(img)
+    
+    # Adapt the histogram titles depending on img_type
+    title = None
+    if (img_type == 'RGB'):
+        title = ('Historgram for the Red', 'Historgram for the Green', 'Historgram for the Blue')
+    elif (img_type == 'HSV'):
+        title = ('Histogram of the Hue', 'Histogram of the Saturation', 'Histogram of the Value')
+    
+    # Plot the histogram for each channel
+    fig, ax = plt.subplots(1, 3, figsize=(20,4), sharex=True, sharey=True)
+
+    hist1, _ = histogram(channel1)
+    ax[0].plot(hist1)
+    ax[0].set_title(title[0])
+    ax[0].set_ylabel("Number of pixels")
+
+    hist2, _ = histogram(channel2)
+    ax[1].plot(hist2)
+    ax[1].set_title(title[1])
+
+    hist3, _ = histogram(channel3)
+    ax[2].plot(hist3)
+    ax[2].set_title(title[2])
+
+    plt.show()
+    
 
 def evaluate_game(pred, cgt, mode_advanced=False):
     """
     Evalutes the accuracy of your predictions. The same function will be used to assess the 
     performance of your model on the final test game.
-
-
     Parameters
     ----------
     pred: array of string of shape NxD
