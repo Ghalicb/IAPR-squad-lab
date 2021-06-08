@@ -1,0 +1,14 @@
+**/__pycache__/*
+**/.idea/
+**/.ipynb_checkpoints/*
+**/.DS_Store
+
+**/*.png
+**/*.mat
+**/*.jpg
+
+**/data/*
+**/train_games/
+**/train_games.zip
+
+Lab?/*yass.ipynb
