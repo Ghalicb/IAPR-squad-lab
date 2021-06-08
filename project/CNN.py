@@ -5,7 +5,7 @@ import torch.nn.functional as F
 class CNN(nn.Module):
 
     def __init__(self, nb_classes=13):
-        super(Net, self).__init__()
+        super(CNN, self).__init__()
 
         self.conv1 = nn.Conv2d(1, 20, 5, 1)
         self.conv2 = nn.Conv2d(20, 50, 5, 1)
