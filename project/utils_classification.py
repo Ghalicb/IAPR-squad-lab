@@ -10,15 +10,11 @@ import matplotlib.pyplot as plt
 
 import cv2
 from skimage import img_as_ubyte
-from skimage.util import invert
 
 # Torch
 import torch
 from torch import nn
 import torch.nn.functional as F
-
-# Model
-from torchvision.models import resnet18
 
 # Data Loading
 from torchvision import datasets
@@ -123,7 +119,7 @@ class MNISTDataset(data.Dataset):
 def load_segmentation_task0(filepath):
     segmented = pd.read_pickle(filepath)
     values = segmented[0].values
-    imgs = [v[-1] for v in values]
+    imgs = [v[1] for v in values]
     ranks = [v[0][0] for v in values]
     suits = [v[0][1] for v in values]
 
@@ -133,94 +129,136 @@ def load_segmentation_task0(filepath):
     
     return df_task0, df_numbers_only, df_not_numbers
   
-def preprocess_segmented_task0(img):
-    inverted = img_as_ubyte(invert(img))
-    _, binary = cv2.threshold(inverted, 100, 120, cv2.THRESH_BINARY)
-    blurred = cv2.GaussianBlur(binary, (3,3), 0)
 
-    return blurred
+def create_figures_dataset(imgs, fig_label, labels_figures, transform, nb_samples):
+    """Augments the array of figures (jacks, queens or kings) using a given transform,
+    until the number of samples in dataset reaches nb_samples.
+
+    Parameters
+    ----------
+    imgs : Numpy ndarray
+        Images of figures to augment
+    fig_label : str
+        Label of the figure we are augmenting
+    labels_figures : dict
+        Dictionary mapping each figure label (J, Q, K) to a number
+    transform : torchvision.transforms.Compose
+        A composition of transforms to apply on images
+    nb_samples : int
+        Number of samples in the final dataset
+
+    Returns
+    -------
+    (Numpy ndarray, Numpy ndarray)
+        A tuple containing the augmented dataset and its corresponding array of labels
+    """
+    size_dataset = imgs.shape[0]
+    image_shape = imgs[0].shape
+    iterations = int(nb_samples/imgs.shape[0])
+    
+    label = labels_figures[fig_label]
+    augmented_data = []
+    labels = []
+    for i in range(iterations):
+        for img in imgs:
+            augmented = img_as_ubyte(transform(img)).reshape(image_shape)
+            augmented_data.append(augmented)
+            labels.append(label)
+    
+    return np.array(augmented_data), np.array(labels)
+
+def get_train_val_test_figures(df_not_numbers, labels_figures, transform):
+    """Given the dataframe containing figures (Jack, Queen, King) and the
+    dictionary mapping the label of a figure to an int, create a train,
+    validation and test set for figures to use in training and testing
+    a model. Train and validation sets are created using augmentation to
+    get a similar number of samples to classes in MNIST.
+
+    Parameters
+    ----------
+    df_not_numbers : pandas DataFrame
+        Dataframe containing figures and their images
+    labels_figures : dict
+        Dictionary mapping labels of figures to ints
+    transform : torchvision.transforms.Compose
+        A composition of transforms to apply on images
+
+    Returns
+    -------
+    (Numpy ndarray, Numpy ndarray, Numpy ndarray, Numpy ndarray, Numpy ndarray, Numpy ndarray)
+        Arrays corresponding to train, validation and test sets with their
+        corresponding labels
+    """
+    kings = df_not_numbers[df_not_numbers['rank'] == 'K'].reset_index(drop=True)
+    queens = df_not_numbers[df_not_numbers['rank'] == 'Q'].reset_index(drop=True)
+    jacks = df_not_numbers[df_not_numbers['rank'] == 'J'].reset_index(drop=True)
+
+    kings_imgs = kings.image.apply(img_as_ubyte)
+    queens_imgs = queens.image.apply(img_as_ubyte)
+    jacks_imgs = jacks.image.apply(img_as_ubyte)
+    
+    # Train
+    train_kings = kings_imgs[:int(0.7*kings.shape[0])]
+    train_queens = queens_imgs[:int(0.7*queens.shape[0])]
+    train_jacks = jacks_imgs[:int(0.7*jacks.shape[0])]
+    
+    train_kings_aug, kings_labels = create_figures_dataset(train_kings, 'K', labels_figures, transform, 5000)
+    train_queens_aug, queens_labels = create_figures_dataset(train_queens, 'Q', labels_figures, transform, 5000)
+    train_jacks_aug, jacks_labels = create_figures_dataset(train_jacks, 'J', labels_figures, transform, 5000)
+    
+    train_augmented_figs = np.concatenate((train_kings_aug, train_queens_aug, train_jacks_aug))
+    train_augmented_figs_labels = np.concatenate((kings_labels, queens_labels, jacks_labels))
+    
+    # Validation 
+    val_kings = kings_imgs[int(0.7*kings.shape[0]):int(0.8*kings.shape[0])].reset_index(drop=True)
+    val_queens = queens_imgs[int(0.7*queens.shape[0]):int(0.8*queens.shape[0])].reset_index(drop=True)
+    val_jacks = jacks_imgs[int(0.7*jacks.shape[0]):int(0.8*jacks.shape[0])].reset_index(drop=True)
+
+    val_kings, val_kings_labels = create_figures_dataset(val_kings, 'K', labels_figures, transform, 500)
+    val_queens, val_queens_labels = create_figures_dataset(val_queens, 'Q', labels_figures, transform, 500)
+    val_jacks, val_jacks_labels = create_figures_dataset(val_jacks, 'J', labels_figures, transform, 500)
+
+    val_augmented_figs = np.concatenate((val_kings, val_queens, val_jacks))
+    val_augmented_figs_labels = np.concatenate((val_kings_labels, val_queens_labels, val_jacks_labels))
+    
+    
+    # Test
+    test_kings = np.array([v for v in kings_imgs[int(0.8*kings.shape[0]):]])
+    test_queens = np.array([v for v in queens_imgs[int(0.8*queens.shape[0]):]])
+    test_jacks = np.array([v for v in jacks_imgs[int(0.8*jacks.shape[0]):]])
+    
+    test_figs = np.concatenate((test_kings, test_queens, test_jacks))
+    test_figs_labels = np.array([labels_figures['K']]*test_kings.shape[0] + [labels_figures['Q']]*test_queens.shape[0] \
+                                    + [labels_figures['J']]*test_jacks.shape[0])
+    
+    return train_augmented_figs, train_augmented_figs_labels, val_augmented_figs, val_augmented_figs_labels, \
+            test_figs, test_figs_labels
 
 # ---------------------------- Model ----------------------------
 
-class Net1(nn.Module):   
-    def __init__(self):
-        super(Net1, self).__init__()
+class Net(nn.Module):
+    def __init__(self, nb_classes=13):
+        super(Net, self).__init__()
 
-        self.cnn_layers = nn.Sequential(
-          # Defining first 2D convolution layer
-          nn.Conv2d(1, 4, kernel_size=3, stride=1, padding=1),
-          nn.ReLU(inplace=True),
-          nn.MaxPool2d(kernel_size=2, stride=2),
-          # Defining second 2D convolution layer
-          nn.Conv2d(4, 4, kernel_size=3, stride=1, padding=1),
-          nn.ReLU(inplace=True),
-          nn.MaxPool2d(kernel_size=2, stride=2),
-        )
-
-        self.linear_layers = nn.Sequential(
-          nn.Linear(4 * 7 * 7, 10)
-        )
-
-    # Defining the forward pass    
-    def forward(self, x):
-        x = self.cnn_layers(x)
-        x = x.view(x.size(0), -1)
-        x = self.linear_layers(x)
-        return x
-
-class Net2(nn.Module):
-    def __init__(self):
-        super(Net2, self).__init__()
         self.conv1 = nn.Conv2d(1, 20, 5, 1)
         self.conv2 = nn.Conv2d(20, 50, 5, 1)
+
         self.fc1 = nn.Linear(4*4*50, 500)
-        self.fc2 = nn.Linear(500, 10)
+        self.fc2 = nn.Linear(500, nb_classes)
 
     def forward(self, x):
         x = F.relu(self.conv1(x))
         x = F.max_pool2d(x, 2, 2)
+
         x = F.relu(self.conv2(x))
         x = F.max_pool2d(x, 2, 2)
+
         x = x.view(-1, 4*4*50)
         x = F.relu(self.fc1(x))
+
         x = self.fc2(x)
+
         return F.log_softmax(x, dim=1)
-
-
-class Net3(nn.Module):
-    def __init__(self):
-        super(Net3, self).__init__()
-        # Convolution 1
-        self.cnn1 = nn.Conv2d(in_channels=1, out_channels=16, kernel_size=3, stride=1, padding=0)
-        self.relu1 = nn.ReLU()
-        self.maxpool1 = nn.MaxPool2d(kernel_size=2)
-     
-        # Convolution 2
-        self.cnn2 = nn.Conv2d(in_channels=16, out_channels=32, kernel_size=3, stride=1, padding=0)
-        self.relu2 = nn.ReLU()
-        self.maxpool2 = nn.MaxPool2d(kernel_size=2)
-        
-        # Fully connected 1
-        self.fc1 = nn.Linear(32 * 5 * 5, 10) 
-    
-    def forward(self, x):
-        # Set 1
-        out = self.cnn1(x)
-        out = self.relu1(out)
-        out = self.maxpool1(out)
-        
-        # Set 2
-        out = self.cnn2(out)
-        out = self.relu2(out)
-        out = self.maxpool2(out)
-        
-        #Flatten
-        out = out.view(out.size(0), -1)
-
-        #Dense
-        out = self.fc1(out)
-        
-        return out
 
 # ------------------------ Training/Testing ------------------------
 
@@ -286,3 +324,31 @@ def test_loop(dataloader, model, loss_func):
     accuracy /= size    
     
     print(f"Test Error:\n\tAvg loss: {test_loss:.5f}, Accuracy: {accuracy:.2%}\n")
+
+
+def predict_rank(imgs, model_class, model_path):
+    """Given an array of 28x28 images, predict the rank of each image using
+    the model given as argument.
+
+    Parameters
+    ----------
+    imgs : Numpy ndarray
+        Images to predict the rank on
+    model_class : torch.nn.Module
+        Class of model to use for predictions
+    model_path : str
+        Path to model weights
+
+    Returns
+    -------
+    torch.Tensor
+        Tensor containing the predictions
+    """
+    model = model_class()
+    model.load_state_dict(torch.load(model_path))
+    model.eval()
+    
+    input_model = torch.Tensor(np.expand_dims(imgs, 1))
+    preds = model(input_model).argmax(1)
+    
+    return preds
