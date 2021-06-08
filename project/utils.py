@@ -3,18 +3,18 @@ import pandas as pd
 
 from skimage import img_as_ubyte
 
-def load_segmentation_task0(filepath):
-    segmented = pd.read_pickle(filepath)
-    values = segmented[0].values
-    imgs = [v[1] for v in values]
-    ranks = [v[0][0] for v in values]
-    suits = [v[0][1] for v in values]
+def load_segmented_rank(filepath):
+    segmented_rank = pd.read_pickle(filepath)
+    segmented_rank_values = segmented_rank[0].values
+    imgs = [v[1] for v in segmented_rank_values]
+    ranks = [v[0][0] for v in segmented_rank_values]
+    suits = [v[0][1] for v in segmented_rank_values]
 
-    df_task0 = pd.DataFrame({"rank": ranks, "suit": suits, "image": imgs})
-    df_numbers_only = df_task0[~df_task0['rank'].isin(['Q', 'J', 'K'])].reset_index(drop=True)
-    df_not_numbers = df_task0[df_task0['rank'].isin(['Q', 'J', 'K'])].reset_index(drop=True)
+    df_segmented_rank = pd.DataFrame({"rank": ranks, "suit": suits, "image": imgs})
+    df_segmented_numbers = df_segmented_rank[~df_segmented_rank['rank'].isin(['Q', 'J', 'K'])].reset_index(drop=True)
+    df_segmented_figures = df_segmented_rank[df_segmented_rank['rank'].isin(['Q', 'J', 'K'])].reset_index(drop=True)
     
-    return df_task0, df_numbers_only, df_not_numbers
+    return df_segmented_rank, df_segmented_numbers, df_segmented_figures
   
 
 def create_figures_dataset(imgs, fig_label, labels_figures, transform, nb_samples):
