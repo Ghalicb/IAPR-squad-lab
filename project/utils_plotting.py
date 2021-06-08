@@ -1,6 +1,8 @@
 import warnings
 warnings.filterwarnings('ignore')
 
+import matplotlib.pyplot as plt
+
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -100,3 +102,20 @@ def plot_round_image_in_HSV(coloured_image):
     hsv_img = img_as_ubyte(hsv_img) # Convert 0-1 to 0-255 
     fig = px.imshow(hsv_img, binary_string=True, title="HSV channels of the image")
     fig.show()
+
+def visualize_extracted_cards(results_df):
+    for i in range(13):
+        print(f"round number {i+1}; dealer = {int(results_df.iloc[i]['dealer'])}")
+        fig, ax = plt.subplots(1,4, figsize=(10,10))
+        ax[0].imshow(results_df.iloc[i]["P1_extracted_card"][0])
+        ax[1].imshow(results_df.iloc[i]["P2_extracted_card"][0])
+        ax[2].imshow(results_df.iloc[i]["P3_extracted_card"][0])
+        ax[3].imshow(results_df.iloc[i]["P4_extracted_card"][0])
+
+def visualize_dealer(dict_data, game_number=1):
+    fig, ax = plt.subplots(4,4, figsize=(20,20))
+    ax = ax.flatten()
+    for i in range(13):
+        img = dict_data[f'game{game_number}'][f'round{i+1}']
+        contour_chip, centers, radius, img_processed  = detect_dealer_chip(img)
+        ax[i].imshow(img_processed)

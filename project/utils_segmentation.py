@@ -2,18 +2,22 @@ import numpy as np
 import pandas as pd
 
 import cv2
-from skimage.util import img_as_ubyte
+from skimage.util import img_as_ubyte, crop
 
-from skimage.color import rgb2hsv
+from skimage.color import rgb2hsv, rgb2gray
 
 from skimage.transform import resize, rotate
 
 from skimage.measure import label, regionprops_table, find_contours
-from skimage.filters import threshold_multiotsu, median
+from skimage.filters import threshold_multiotsu, median, threshold_otsu
 
-from skimage.morphology import (square, binary_opening,
-                        binary_closing, opening, binary_dilation, binary_erosion, remove_small_objects)
+from skimage.segmentation import clear_border
 
+from skimage.morphology import (square, binary_opening, binary_closing, opening, 
+                binary_dilation, binary_erosion, remove_small_objects)
+
+
+from utils import rgb_to_hsv, split_img
 
 def preprocess_image(coloured_image):
     """Preprocess image of a round.
@@ -260,4 +264,243 @@ def pipeline_segmentation_round(coloured_image):
 
     return dealer_series, ordered_cards_only_df, result_series
 
-        
+
+def extract_rank_from_card(coloured_card, binary_card, backup_image):
+    """Extracts rank from segmented card and its binary equivalent. If no
+    rank is found, return a backup image.
+
+    Parameters
+    ----------
+    coloured_card : np.array
+        Segmented coloured card
+    binary_card : np.array
+        Segmented card in binary format
+    backup_image : np.array
+        Backup rank to return in case no rank
+        is found
+
+    Returns
+    -------
+    np.array
+        Cropped gray-scaled image of the rank, scaled-down to 28x28
+    """
+
+    crop_factor = 0.15
+
+    cropped_binary_card = crop(binary_card, ((binary_card.shape[0]*crop_factor, binary_card.shape[0]*crop_factor), 
+                                                (binary_card.shape[1]*crop_factor, binary_card.shape[1]*crop_factor)))
+    cropped_coloured_card = crop(coloured_card, ((coloured_card.shape[0]*crop_factor, coloured_card.shape[0]*crop_factor), 
+                                                    (coloured_card.shape[1]*crop_factor, coloured_card.shape[1]*crop_factor), (0, 0)))
+
+    # Take the negative of the segmented binary card (numbers become objects instead of background)
+    filt1 = (cropped_binary_card == False)
+    filt2 = (cropped_binary_card == True)
+    cropped_binary_card[filt1] = True
+    cropped_binary_card[filt2] = False   
+    cropped_binary_card = binary_dilation(cropped_binary_card, square(45)) # Closes the number having holes i.e some 5 and 2
+    labeled_im = remove_small_objects(label(cropped_binary_card), 5000)
+    
+    props_objs = regionprops_table(labeled_im, properties=(
+                                                  "label",
+                                                  "area",
+                                                  'centroid',"slice"))
+    df_objs = pd.DataFrame(props_objs)
+    
+    if(len(df_objs)==0): 
+        print("A Rank not detected. backup Queen was put instead...")
+        return backup_image
+    
+    else:
+        coloured_cropped_number = cropped_coloured_card[df_objs.loc[df_objs["area"].idxmax()]["slice"]] # extract the number (biggest object)
+        cropped_number_gray = rgb2gray(coloured_cropped_number)
+        thresh = threshold_otsu(cropped_number_gray)
+        mnist_im = resize(img_as_ubyte(cropped_number_gray < thresh), (28,28))
+        return mnist_im
+ 
+
+def extract_suit_from_card(coloured_card, backup_image, upper_left=True):
+    """Extracts the suit from a segmented coloured card. If no suit is
+    detected, return a backup image.
+
+    Parameters
+    ----------
+    coloured_card : np.array
+        Segmented coloured card
+    backup_image : np.array
+        Backup suit to return in case no
+        suit is found
+    upper_left : bool, optional
+        Whether to take the suit in the upper left corner
+        or lower right, by default True
+
+    Returns
+    -------
+    np.array
+        Cropped gray-scaled image of the suit, scaled-down to 28x28
+    """
+    if (upper_left):
+        cropped_coloured_card = crop(coloured_card, ((0, coloured_card.shape[0]*0.6), (0, coloured_card.shape[1]*0.5), (0, 0)))
+    else:
+        cropped_coloured_card = crop(coloured_card, ((coloured_card.shape[0]*0.6, 0), (coloured_card.shape[1]*0.5, 0), (0, 0)))
+
+    cropped_coloured_card_gray = rgb2gray(cropped_coloured_card)
+    thresh = threshold_otsu(cropped_coloured_card_gray)
+    cropped_coloured_card_gray_binary = img_as_ubyte(cropped_coloured_card_gray < thresh)
+    labeled_im = label(cropped_coloured_card_gray_binary)
+    labeled_im = clear_border(labeled_im)
+    
+    props_objs = regionprops_table(labeled_im, properties=(
+                                                  "label",
+                                                  "area",
+                                                  'centroid',"slice"))
+    df_objs = pd.DataFrame(props_objs)
+
+    if(len(df_objs)==0): 
+        print("A suit not detected. backup Spade was put instead... ")
+        return backup_image
+    else:
+        extracted_suit_coloured = cropped_coloured_card[df_objs.loc[df_objs["area"].idxmax()]["slice"]]
+
+        extracted_suit_gray = rgb2gray(extracted_suit_coloured)
+        thresh = threshold_otsu(extracted_suit_gray)
+        return resize(img_as_ubyte(extracted_suit_gray < thresh), (28,28))
+
+
+def extract_all_ranks_suits(dict_data, nb_games, nb_rounds, backup_rank, backup_suit):
+    """Extract all ranks and suits from the images of rounds across games.
+
+    Parameters
+    ----------
+    dict_data : dict
+        Dictionary containing the images of rounds,
+        categorized by game number
+    nb_games : int
+        Number of games to extract from
+    nb_rounds : int
+        Number of rounds to extract from
+    backup_rank : np.array
+        Backup rank in case no rank is found
+        during extraction
+    backup_suit : np.array
+        Backup suit in case no suit is found
+        during extraction
+
+    Returns
+    -------
+    (pd.DataFrame, pd.DataFrame)
+        A tuple of DataFrames, the first one containing all the ranks and the second
+        one all the suits
+    """
+    df_ranks = []
+    df_suits = []
+    for game_nb in range(1, nb_games+1):
+        for i in range(1, nb_rounds+1):
+            coloured_image = dict_data[f'game{game_nb}'][f'round{i}']
+            df_ground_truth = pd.read_csv(f"data/train_games/game{game_nb}/game{game_nb}.csv")
+            
+            preprocessed_img = preprocess_image(coloured_image)
+            df_objs = find_potential_objects_in_original_round_image(preprocessed_img)
+            cards_only_df = select_cards_from_potential_objects(df_objs)      
+            cards_ordered_df = extract_ordered_cards(coloured_image, cards_only_df)
+            
+            for player_nb in range(4):
+                true_rank = df_ground_truth.loc[i-1, f"P{player_nb+1}"][0]
+                true_suit = df_ground_truth.loc[i-1, f"P{player_nb+1}"][1]
+                
+                coloured_card = cards_ordered_df.loc[player_nb]["image_coloured"]
+                binary_card = cards_ordered_df.loc[player_nb]["image"]
+                rank = extract_rank_from_card(coloured_card, binary_card, backup_rank)
+                suit_upper_left = extract_suit_from_card(coloured_card, backup_suit, upper_left=True)
+                suit_lower_right = extract_suit_from_card(coloured_card, backup_suit, upper_left=False)
+                
+                df_ranks.append({'rank': true_rank, 'suit': true_suit, 'image': rank})
+                df_suits.append({'rank': true_rank, 'suit': true_suit, 'image': suit_upper_left})
+                df_suits.append({'rank': true_rank, 'suit': true_suit, 'image': rotate(suit_lower_right, 180)})
+            
+    df_ranks = pd.DataFrame(df_ranks)
+    df_suits = pd.DataFrame(df_suits)
+    
+    return df_ranks, df_suits
+
+
+# -------------------------- EDGE-BASED --------------------------
+def find_sorted_contours(img):
+    """Given an image, find all the contours in the image
+    and sort them by area covered by the contour.
+
+    Parameters
+    ----------
+    img : np.array
+        Image to perform contour detection on
+
+    Returns
+    -------
+    np.array
+        Contours sorted by area
+    """
+    # Find the contours of our image
+    contours, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # Sort the contours by area covered within the contours
+    contours = sorted(contours, key=cv2.contourArea, reverse=True)
+    
+    return contours
+
+def detect_dealer_chip(img):
+    """Detect dealer chip in image using edge-based method.
+
+    Parameters
+    ----------
+    img : np.array
+        Image to extract the dealer chip from
+
+    Returns
+    -------
+    (np.array, np.array, np.array, int, np.array)
+        The contour of the chip, the centers of the minimum enclosing circle
+        and its corresponding radius, as well as the preprocessed image
+    """
+    # Convert RGB to HSV image
+    hsv_img = rgb_to_hsv(img)
+    
+    # Split the image
+    hue_img, sat_img, val_img = split_img(hsv_img)
+    
+    # Threshold the image and transform it to a binary image
+    img_processed = (hue_img > 60) & (hue_img < 120) & (sat_img > 90) & (sat_img < 180)
+    
+    # Convert the image from binary to [0-255]
+    img_processed = img_as_ubyte(img_processed)
+    
+    # Apply a closing to the image (close the holes in the dealer chip)
+    kernel_ell = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(15,15))
+    img_processed = cv2.morphologyEx(img_processed, cv2.MORPH_CLOSE, kernel_ell)
+
+    # Apply an opening to the image (remove the cards)
+    kernel_rec = cv2.getStructuringElement(cv2.MORPH_RECT,(45,45))
+    img_processed = cv2.morphologyEx(img_processed, cv2.MORPH_OPEN, kernel_rec)
+    
+    # Find the contour & the enclosing circle of the chip
+    contour_chip = find_sorted_contours(img_processed)[0]
+                
+    contour_chip_poly = cv2.approxPolyDP(contour_chip, 3, True)
+    centers, radius = cv2.minEnclosingCircle(contour_chip_poly)
+    
+    return contour_chip, centers, radius, img_processed
+
+
+def transform_results_df_into_mnist_cards(results_df):
+    for i in range(4):
+        results_df[f"P{i+1}_mnist_number"] = results_df[f"P{i+1}_extracted_card"].apply(lambda card: extract_rank_from_card(card[0], card[1]))
+        results_df[f"P{i+1}_mnist_suit"] = results_df[f"P{i+1}_extracted_card"].apply(lambda card: extract_suit_from_card(card[0], backup_image, upper_left=True))
+    results_df["P1_mnist_number"] = results_df["P1_extracted_card"].apply(lambda card: create_mnist_number_from_extracted_coloured_cards(card[0], card[1]))
+    results_df["P2_mnist_number"] = results_df["P2_extracted_card"].apply(lambda card: create_mnist_number_from_extracted_coloured_cards(card[0], card[1]))
+    results_df["P3_mnist_number"] = results_df["P3_extracted_card"].apply(lambda card: create_mnist_number_from_extracted_coloured_cards(card[0], card[1]))
+    results_df["P4_mnist_number"] = results_df["P4_extracted_card"].apply(lambda card: create_mnist_number_from_extracted_coloured_cards(card[0], card[1]))
+
+    results_df["P1_mnist_suit"] = results_df["P1_extracted_card"].apply(lambda card: create_mnist_suit_from_extracted_coloured_cards(card[0], upper_left=True))
+    results_df["P2_mnist_suit"] = results_df["P2_extracted_card"].apply(lambda card: create_mnist_suit_from_extracted_coloured_cards(card[0], upper_left=True))
+    results_df["P3_mnist_suit"] = results_df["P3_extracted_card"].apply(lambda card: create_mnist_suit_from_extracted_coloured_cards(card[0], upper_left=True))
+    results_df["P4_mnist_suit"] = results_df["P4_extracted_card"].apply(lambda card: create_mnist_suit_from_extracted_coloured_cards(card[0], upper_left=True))
+
+    return results_df

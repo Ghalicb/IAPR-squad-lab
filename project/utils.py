@@ -2,6 +2,45 @@ import numpy as np
 import pandas as pd
 
 from skimage import img_as_ubyte
+from skimage.color import rgb2hsv
+
+
+def rgb_to_hsv(rgb_img):
+    """
+    Convert an RGB image into HSV.
+    Parameters
+    ----------
+    rgb_img: 3darray [HxWx3]
+        Image with RGB channels.
+        
+    Returns
+    -------
+    hsv_img: 3darray [HxWx3]
+        Image with HSV channels with values between [0-255].
+    """
+    # Convert from rgb to hsv
+    hsv_img = rgb2hsv(rgb_img)
+    
+    # Convert from range 0-1 to 0-255
+    hsv_img = img_as_ubyte(hsv_img)
+    
+    return hsv_img
+
+def split_img(img):
+    """
+    Split the three channels of an image of dimensions [HxWxC].
+    Parameters
+    ----------
+    img: 3darray [HxWx3]
+        Image to split.
+       
+    Returns
+    -------
+    tuple of 3 [HxW] array
+        A tuple containing each channel of the image
+    """
+    return (img[:,:,0], img[:,:,1], img[:,:,2])
+
 
 def load_segmentation_task0(filepath):
     segmented = pd.read_pickle(filepath)

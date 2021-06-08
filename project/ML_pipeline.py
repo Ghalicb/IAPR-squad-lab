@@ -1,27 +1,28 @@
 import numpy as np
+from skimage.util import img_as_ubyte
 
 import torch
 
 def augment_data(data, transform):
-"""Augment the given images with the transform passed as argument
-Parameters
-----------
-data : np.ndarray
-    Images to augment
-transform : torchvision.transforms.Compose
-    A composition of transformations to apply on images
-Returns
--------
-np.ndarray
-    Numpy array containing augmented images
-"""
-augmented_imgs = []
-image_shape = data[0].shape
-for img in data:
-    augmented = img_as_ubyte(transform(img)).reshape(image_shape)
-    augmented_imgs.append(augmented)
-    
-return np.array(augmented_imgs)
+    """Augment the given images with the transform passed as argument
+    Parameters
+    ----------
+    data : np.ndarray
+        Images to augment
+    transform : torchvision.transforms.Compose
+        A composition of transformations to apply on images
+    Returns
+    -------
+    np.ndarray
+        Numpy array containing augmented images
+    """
+    augmented_imgs = []
+    image_shape = data[0].shape
+    for img in data:
+        augmented = img_as_ubyte(transform(img)).reshape(image_shape)
+        augmented_imgs.append(augmented)
+        
+    return np.array(augmented_imgs)
 
 
 def train_loop(dataloader, model, loss_func, optimizer):
