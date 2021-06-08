@@ -1,7 +1,8 @@
 import numpy as np
-from skimage.util import img_as_ubyte
-
 import torch
+
+from skimage import img_as_ubyte
+
 
 def augment_data(data, transform):
     """Augment the given images with the transform passed as argument
