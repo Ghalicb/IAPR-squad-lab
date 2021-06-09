@@ -239,7 +239,8 @@ def pipeline_segmentation_round(coloured_image):
         about the cards ordered by player number, and a Series containing a summary about
         the different objects to be extract from the image (extracted image + contour)
     """
-    df_objs = find_potential_objects_in_original_round_image(coloured_image)
+    preprocessed_img = preprocess_image(coloured_image)
+    df_objs = find_potential_objects_in_original_round_image(preprocessed_img)
     
     cards_only_df = select_cards_from_potential_objects(df_objs)
     dealer_series = select_dealer_from_potential_objects(df_objs)
@@ -256,7 +257,7 @@ def pipeline_segmentation_round(coloured_image):
         contour = find_contours(ordered_cards_only_df.iloc[index]["labeled_im"] == label_, 0.5)[0]
         result_series[f"P{index+1}_extracted_card_contour"] = contour
     
-    result_series["dealer"] = int(ordered_cards_only_df[ordered_cards_only_df["dealer"]]["player"][0])
+    result_series["dealer"] = int(ordered_cards_only_df[ordered_cards_only_df["dealer"]]["player"].iloc[0])
     
     label_dealer = dealer_series["label"]
     contour_dealer = find_contours(dealer_series["labeled_im"] == label_dealer, 0.5)[0]
@@ -287,9 +288,9 @@ def extract_rank_from_card(coloured_card, binary_card, backup_image):
 
     crop_factor = 0.15
 
-    cropped_binary_card = crop(binary_card, ((binary_card.shape[0]*crop_factor, binary_card.shape[0]*crop_factor), 
+    cropped_binary_card = crop(binary_card, ((binary_card.shape[0]*crop_factor, binary_card.shape[0]*crop_factor), \
                                                 (binary_card.shape[1]*crop_factor, binary_card.shape[1]*crop_factor)))
-    cropped_coloured_card = crop(coloured_card, ((coloured_card.shape[0]*crop_factor, coloured_card.shape[0]*crop_factor), 
+    cropped_coloured_card = crop(coloured_card, ((coloured_card.shape[0]*crop_factor, coloured_card.shape[0]*crop_factor), \
                                                     (coloured_card.shape[1]*crop_factor, coloured_card.shape[1]*crop_factor), (0, 0)))
 
     # Take the negative of the segmented binary card (numbers become objects instead of background)

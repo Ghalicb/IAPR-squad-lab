@@ -216,7 +216,21 @@ def get_train_val_test_suits(df_suits, labels_suits, transform):
     return train_augmented_suits, train_augmented_suits_labels, val_augmented_suits, val_augmented_suits_labels, \
             test_suits, test_suits_labels
 
+
 def JQK_to_number(letter):
+    """Given a string representation of a lable, returns its 
+    corresponding integer representation
+
+    Parameters
+    ----------
+    letter : str
+        Label of rank
+
+    Returns
+    -------
+    int
+        Integer representation of the label
+    """
     if letter == "J": return 10
     elif letter == "Q": return 11
     elif letter == "K": return 12
@@ -224,6 +238,20 @@ def JQK_to_number(letter):
 
 
 def count_points_standard(final_df):
+    """Given the dataframe containing the final results of
+    the pipeline, counts the points according to the standard rules.
+
+    Parameters
+    ----------
+    final_df : pd.DataFrame
+        DataFrame containing all the predictions per player and per round
+
+    Returns
+    -------
+    list
+        List containing the points won by the players at the end of the
+        game according to the standard rules
+    """
     counter = [0,0,0,0]
     for index, row in final_df.iterrows():
         array_of_ranks = final_df[["P1", "P2", "P3", "P4"]].loc[index].apply(lambda x: JQK_to_number(x[0])).values
@@ -235,6 +263,20 @@ def count_points_standard(final_df):
 
 
 def count_points_advanced(final_df):
+    """Given the dataframe containing the final results of
+    the pipeline, counts the points according to the advanced rules.
+
+    Parameters
+    ----------
+    final_df : pd.DataFrame
+        DataFrame containing all the predictions per player and per round
+
+    Returns
+    -------
+    np.array
+        Array containing the points won by the players at the end of the
+        game according to the advanced rules
+    """
     counter = np.array([0,0,0,0])
     for index, row in final_df.iterrows():  
         player = final_df.loc[index]["D"]
@@ -245,12 +287,10 @@ def count_points_advanced(final_df):
 
         suit_cards = cards_list[filt]
         best_card = max(suit_cards.values, key=lambda item:item[0])
-        
+
         points = (cards_list == best_card).astype(int).values
         counter = counter + points
     return counter
-
-
 
 
 def evaluate_game(pred, cgt, mode_advanced=False):
