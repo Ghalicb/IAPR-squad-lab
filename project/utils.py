@@ -43,13 +43,7 @@ def split_img(img):
 
 
 def load_segmented_rank(filepath):
-    segmented_rank = pd.read_pickle(filepath)
-    segmented_rank_values = segmented_rank[0].values
-    imgs = [v[1] for v in segmented_rank_values]
-    ranks = [v[0][0] for v in segmented_rank_values]
-    suits = [v[0][1] for v in segmented_rank_values]
-
-    df_segmented_rank = pd.DataFrame({"rank": ranks, "suit": suits, "image": imgs})
+    df_segmented_rank = pd.read_pickle(filepath)
     df_segmented_numbers = df_segmented_rank[~df_segmented_rank['rank'].isin(['Q', 'J', 'K'])].reset_index(drop=True)
     df_segmented_figures = df_segmented_rank[df_segmented_rank['rank'].isin(['Q', 'J', 'K'])].reset_index(drop=True)
     
@@ -221,6 +215,42 @@ def get_train_val_test_suits(df_suits, labels_suits, transform):
     
     return train_augmented_suits, train_augmented_suits_labels, val_augmented_suits, val_augmented_suits_labels, \
             test_suits, test_suits_labels
+
+def JQK_to_number(letter):
+    if letter == "J": return 10
+    elif letter == "Q": return 11
+    elif letter == "K": return 12
+    else: return int(letter)
+
+
+def count_points_standard(final_df):
+    counter = [0,0,0,0]
+    for index, row in final_df.iterrows():
+        array_of_ranks = final_df[["P1", "P2", "P3", "P4"]].loc[index].apply(lambda x: JQK_to_number(x[0])).values
+        max_rank = array_of_ranks.max()
+        for i in range(4):
+            if array_of_ranks[i] == max_rank:
+                counter[i]+=1
+    return counter
+
+
+def count_points_advanced(final_df):
+    counter = np.array([0,0,0,0])
+    for index, row in final_df.iterrows():  
+        player = final_df.loc[index]["D"]
+        suit = final_df.loc[index][f"P{player}"][1]
+
+        cards_list = final_df.loc[index][["P1", "P2", "P3", "P4"]].apply(lambda x: (JQK_to_number(x[0]),x[1]))
+        filt = cards_list.apply(lambda x: x[1]==suit)
+
+        suit_cards = cards_list[filt]
+        best_card = max(suit_cards.values, key=lambda item:item[0])
+        
+        points = (cards_list == best_card).astype(int).values
+        counter = counter + points
+    return counter
+
+
 
 
 def evaluate_game(pred, cgt, mode_advanced=False):

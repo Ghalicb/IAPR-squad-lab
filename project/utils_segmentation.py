@@ -487,20 +487,3 @@ def detect_dealer_chip(img):
     centers, radius = cv2.minEnclosingCircle(contour_chip_poly)
     
     return contour_chip, centers, radius, img_processed
-
-
-def transform_results_df_into_mnist_cards(results_df):
-    for i in range(4):
-        results_df[f"P{i+1}_mnist_number"] = results_df[f"P{i+1}_extracted_card"].apply(lambda card: extract_rank_from_card(card[0], card[1]))
-        results_df[f"P{i+1}_mnist_suit"] = results_df[f"P{i+1}_extracted_card"].apply(lambda card: extract_suit_from_card(card[0], backup_image, upper_left=True))
-    results_df["P1_mnist_number"] = results_df["P1_extracted_card"].apply(lambda card: create_mnist_number_from_extracted_coloured_cards(card[0], card[1]))
-    results_df["P2_mnist_number"] = results_df["P2_extracted_card"].apply(lambda card: create_mnist_number_from_extracted_coloured_cards(card[0], card[1]))
-    results_df["P3_mnist_number"] = results_df["P3_extracted_card"].apply(lambda card: create_mnist_number_from_extracted_coloured_cards(card[0], card[1]))
-    results_df["P4_mnist_number"] = results_df["P4_extracted_card"].apply(lambda card: create_mnist_number_from_extracted_coloured_cards(card[0], card[1]))
-
-    results_df["P1_mnist_suit"] = results_df["P1_extracted_card"].apply(lambda card: create_mnist_suit_from_extracted_coloured_cards(card[0], upper_left=True))
-    results_df["P2_mnist_suit"] = results_df["P2_extracted_card"].apply(lambda card: create_mnist_suit_from_extracted_coloured_cards(card[0], upper_left=True))
-    results_df["P3_mnist_suit"] = results_df["P3_extracted_card"].apply(lambda card: create_mnist_suit_from_extracted_coloured_cards(card[0], upper_left=True))
-    results_df["P4_mnist_suit"] = results_df["P4_extracted_card"].apply(lambda card: create_mnist_suit_from_extracted_coloured_cards(card[0], upper_left=True))
-
-    return results_df
